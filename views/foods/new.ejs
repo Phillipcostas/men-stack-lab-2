@@ -1,0 +1,24 @@
+<!-- views/foods/new.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create a New Category</title>
+  </head>
+  <body>
+    <h1>Create a New Category of Food!</h1>
+    <form action="/food" method="POST">
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name" />
+    
+        <!-- <label for="isYourFavorite">Best?</label>
+        <input type="checkbox" name="isYourFavorite" id="isYourFavorite" /> -->
+    
+        <button type="submit">Add Food Category</button>
+      </form>
+      <a href="/foods/">Back to Foods</a>
+
+  </body>
+</html>
