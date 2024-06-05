@@ -24,67 +24,74 @@ app.use(morgan("dev")); //new
 app.get("/", async (req, res) => {
     res.render('index.ejs');
   });
-  
+
 // GET /food/new
-app.get("/foods/new", (req, res) => {
-    res.render('/foods/new.ejs');
+app.get("foods/new", (req, res) => {
+  res.render('/foods/new.ejs');
 });
 
-// POST /foods
-app.post("/foods", async (req, res) => {
-    if (req.body.isYourFavortie === "on") {
-        req.body.isYourFavortie = true;
-      } else {
-        req.body.isYourFavortie = false;
-      }
-      await Food.create(req.body);
-      res.redirect("/foods"); //redirect to index frutis 
-    });
+  app.get ('foods', (req, res) => {
+    res.render('/foods/allfood.ejs');
+  })
 
 
 // GET /foods
 app.get("/foods", async (req, res) => {
     const allFoods = await Food.find();
     console.log(allFoods);
-    res.render("foods/index.ejs", { food: allFoods });
+    res.render("foods/allfood.ejs", { food: allFoods });
   });
 
   app.get("/foods/:foodId", async (req, res) => {
     const foundFood = await Food.findById(req.params.fruitId);
-    res.render("foods/show.ejs", { fruit: foundFood });
+    res.render("foods/edit.ejs", { food: foundFood });
   });
+
+  // GET localhost:3000/fruits/:fruitId/edit
+  app.get("/foods/:foodId/edit", async (req, res) => {
+    const foundFood = await Food.findById(req.params.foodId);
+    console.log(foundFood);
+    res.render("foods/edit.ejs", {
+        fruit: foundFood,
+      });
+    });
+
+
+  // POST /foods
+app.post("/foods", async (req, res) => {
+  if (req.body.isYourFavortie === "on") {
+      req.body.isYourFavortie = true;
+    } else {
+      req.body.isYourFavortie = false;
+    }
+    await Food.create(req.body);
+    res.redirect("/foods"); //redirect to index foods
+  });
+
+  app.put("/foods/:foodId", async (req, res) => {
+    // Handle the 'isReadyToEat' checkbox data
+    if (req.body.isYourFavortie === "on") {
+      req.body.isYourFavortie = true;
+    } else {
+      req.body.isYourFavortie = false;
+    }
+    
+    // Update the food in the database
+    await Food.findByIdAndUpdate(req.params.foodId, req.body);
   
+    // Redirect to the food show page to see the updates
+    res.redirect(`/foods/${req.params.foodId}`);
+  });
+
+
+
   app.delete("/foods/:foodId", async (req, res) => {
     await Food.findByIdAndDelete(req.params.foodId);
     res.redirect("/foods");
   });
 
-  // GET localhost:3000/fruits/:fruitId/edit
-app.get("/foods/:foodId/edit", async (req, res) => {
-    const foundFood = await Food.findById(req.params.foodId);
-    console.log(foundFood);
-    res.render("fruits/edit.ejs", {
-        fruit: foundFruit,
-      });
-    });
 
-    // server.js
 
-app.put("/fruits/:fruitId", async (req, res) => {
-    // Handle the 'isReadyToEat' checkbox data
-    if (req.body.isReadyToEat === "on") {
-      req.body.isReadyToEat = true;
-    } else {
-      req.body.isReadyToEat = false;
-    }
-    
-    // Update the fruit in the database
-    await Food.findByIdAndUpdate(req.params.foodId, req.body);
-  
-    // Redirect to the fruit's show page to see the updates
-    res.redirect(`/foods/${req.params.foodId}`);
-  });
-  
 
 app.listen(3000, () => {
   console.log("Listening on port 3000");
