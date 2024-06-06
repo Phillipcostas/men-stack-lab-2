@@ -32,7 +32,7 @@ app.get("/", async (req, res) => {
 
   app.get("/foods", async (req, res) => {
     const allFood = await Food.find();
-    // console.log(allFoods)
+    console.log(allFood)
     res.render('foods/index.ejs', { food: allFood });
   });
 
@@ -57,7 +57,7 @@ app.get("/foods/:foodId", async (req, res) => {
 });
 
 
-app.get('/foods/:foodId/edit', async(req, res) => {
+app.get('/foods/edit', async(req, res) => {
   const foundFood = await Food.findById(req.params.foodId)
   console.log(foundFood);
   res.render("foods/edit.ejs", {
@@ -78,7 +78,7 @@ app.put("/food/:foodId", async (req, res) => {
 });
 
 app.delete("/foods/:foodId", async (req, res) => {
-  await Food.findByIdAndDelete(req.params.fruitId);
+  await Food.findByIdAndDelete(req.params.foodId);
   res.redirect('/foods');
 });
 

@@ -13,7 +13,7 @@
 <body>
     <h1>All Foods</h1>
     <ul>
-      <% foods.forEach(food => { %>
+      <% food.forEach(food => { %>
         console.log(food)
         <li>
           <a href="/foods<%= food._id %>"><%= food.name %></a>
