@@ -57,16 +57,14 @@ app.get("/foods/:foodId", async (req, res) => {
 });
 
 
-app.get('/foods/edit', async(req, res) => {
+app.get('/foods/:foodId/edit', async(req, res) => {
   const foundFood = await Food.findById(req.params.foodId)
   console.log(foundFood);
-  res.render("foods/edit.ejs", {
-      food: foundFood,    
-})
+  res.render("foods/edit.ejs", { food: foundFood })
 })
 //<--------------------- Edit / Delete - Route ------------------------->
 
-app.put("/food/:foodId", async (req, res) => {
+app.put("/foods/:foodId", async (req, res) => {
   if (req.body.isYourFavortie === "on") {
     req.body.isYourFavortie = true;
   } else {
@@ -86,6 +84,20 @@ app.delete("/foods/:foodId", async (req, res) => {
 app.listen(3000, () => {
   console.log("Listening on port 3000");
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // // // GET /food/new
